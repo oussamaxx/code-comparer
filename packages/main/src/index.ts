@@ -1,4 +1,4 @@
-import {app} from 'electron';
+import {app, dialog, ipcMain} from 'electron';
 import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
 import {platform} from 'node:process';
@@ -32,12 +32,22 @@ app.on('window-all-closed', () => {
  */
 app.on('activate', restoreOrCreateWindow);
 
+async function handleFileOpen (event, args = {}) {
+  const { canceled, filePaths } = await dialog.showOpenDialog(args);
+  if (!canceled) {
+    return filePaths;
+  }
+}
+function startListen(){
+  ipcMain.handle('dialog:openFile', handleFileOpen);
+}
 /**
  * Create the application window when the background process is ready.
  */
 app
   .whenReady()
   .then(restoreOrCreateWindow)
+  .then(startListen)
   .catch(e => console.error('Failed create window:', e));
 
 /**
