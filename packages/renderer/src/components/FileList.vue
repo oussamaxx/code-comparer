@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div style="height: inherit">
     <button
       class="fluid ui  primary button"
       @click="openFileDialog"
@@ -8,17 +8,20 @@
       <i class="file icon"></i>
       Select File(s)
     </button>
-    <div class="ui relaxed divided selection list">
+    <div
+      class="ui relaxed divided selection list scrolable"
+      style="height: calc(100% - 20px); overflow: auto"
+    >
       <div
-        v-for="filePath in filePaths"
-        :key="filePath"
+        v-for="file in files"
+        :key="file.path"
         class="item"
-        @click="selectFile(filePath)"
+        @click="selectFile(file)"
       >
-        <i class="large github middle aligned icon"></i>
+        <i class="large file middle aligned icon"></i>
         <div class="content">
-          <a class="header">File1</a>
-          <div class="description">{{ filePath }}</div>
+          <a class="header">{{ file.name }}</a>
+          <div class="description">{{ file.path }}</div>
         </div>
       </div>
     </div>
@@ -32,23 +35,25 @@ export default defineComponent({
   emits: ['selectFile'],
   data(){
     return {
-      filePaths:[],
-
+      files:[],
     };
   },
   methods:{
     openFileDialog(){
-      electron.ipcRenderer.invoke('dialog:openFile', { properties: ['openFile', 'multiSelections'] }).then((filePaths)=>{
-        this.filePaths = filePaths;
+      electron.ipcRenderer.invoke('dialog:openFile', { properties: ['openFile', 'multiSelections'] }).then((files)=>{
+        this.files = files;
       });
 
     },
-    selectFile(filePath){
-      this.$emit('selectFile', filePath);
+    selectFile(file){
+      this.$emit('selectFile', file);
     },
   },
 });
 </script>
 <style scoped>
-
+.divided.selection.list.scrolable{
+  overflow: auto;
+  height:90vh;
+}
 </style>
