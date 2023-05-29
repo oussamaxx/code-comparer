@@ -1,12 +1,11 @@
 {
-  "name": "vite-electron-builder",
-  "description": "Secure boilerplate for Electron app based on Vite",
+  "name": "code-comparer",
+  "description": "Compare Files",
   "version": "1.0.2",
   "private": true,
   "author": {
-    "email": "kozackunisoft@gmail.com",
-    "name": "Alex Kozack",
-    "url": "https://kozack.me"
+    "email": "norsessadaoui@gmail.com",
+    "name": "Oussama ESSADAOUI"
   },
   "main": "packages/main/dist/index.cjs",
   "scripts": {
@@ -14,7 +13,7 @@
     "build:main": "cd ./packages/main && vite build",
     "build:preload": "cd ./packages/preload && vite build",
     "build:renderer": "cd ./packages/renderer && vite build",
-    "compile": "cross-env MODE=production npm run build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
+    "compile": "cross-env MODE=production npm run build && electron-builder build --config .electron-builder.config.js ",
     "test": "npm run test:main && npm run test:preload && npm run test:renderer && npm run test:e2e",
     "test:e2e": "npm run build && vitest run",
     "test:main": "vitest run -r packages/main --passWithNoTests",
@@ -53,7 +52,6 @@
   },
   "dependencies": {
     "@electron-toolkit/preload": "^1.0.3",
-    "electron-updater": "5.3.0",
     "fomantic-ui": "^2.9.2",
     "jquery": "^3.7.0",
     "v-code-diff": "^1.5.0"

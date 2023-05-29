@@ -64,13 +64,17 @@
           :filename="rightSelectedFile.name"
         />
       </div>
-      <div class="three wide column">
+      <div
+        class="three wide column"
+        style="height: inherit"
+      >
         <file-list
           style="height: inherit"
           @select-file="(file)=>{fileSelected(file, 'left')}"
         ></file-list>
       </div>
     </div>
+    <div class="watermark">OE</div>
   </div>
 </template>
 
@@ -143,7 +147,15 @@
     height: 100vh;
   }
 
-
+.watermark{
+  position: fixed;
+  bottom: 7px;
+  right: 5px;
+  font-size: 34px;
+  color: grey;
+  opacity: 0.4;
+  font-family: fantasy;
+}
 
 
 </style>

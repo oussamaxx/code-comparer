@@ -9,11 +9,22 @@
       Select File(s)
     </button>
     <div
+      class="ui fluid icon input"
+      style="margin: 5px 0 5px 0"
+    >
+      <input
+        v-model="searchTerm"
+        type="text"
+        placeholder="Search..."
+      >
+      <i class="search icon"></i>
+    </div>
+    <div
       class="ui relaxed divided selection list scrolable"
-      style="height: calc(100% - 20px); overflow: auto"
+      style="height: calc(100% - 65px); overflow: auto"
     >
       <div
-        v-for="file in files"
+        v-for="file in filteredFiles"
         :key="file.path"
         class="item"
         @click="selectFile(file)"
@@ -36,11 +47,22 @@ export default defineComponent({
   data(){
     return {
       files:[],
+      searchTerm: null,
     };
+  },
+  computed:{
+    filteredFiles() {
+      if(!this.searchTerm)
+        return this.files;
+      return this.files.filter(file => {
+        return file.name.toLowerCase().includes(this.searchTerm);
+      });
+    },
   },
   methods:{
     openFileDialog(){
       electron.ipcRenderer.invoke('dialog:openFile', { properties: ['openFile', 'multiSelections'] }).then((files)=>{
+        this.searchTerm = null;
         this.files = files;
       });
 
